@@ -1,4 +1,4 @@
-from Matching import find_longest_match
+from Matching import find_longest_match   
 
 def compress(text, search_buffer_size=13, lookahead_buffer_size=6):
     tags = []
@@ -16,13 +16,14 @@ def compress(text, search_buffer_size=13, lookahead_buffer_size=6):
         
         if i + length < n:
             next_symbol = text[i + length]
+            tag = (position, length, next_symbol)
+            i+=length+1
         else:
             next_symbol = None
+            tag = (position, length, next_symbol)
+            i+=length
 
-        tag = (position, length, next_symbol)
         tags.append(tag)
-        
-        i += length + 1
         
     return tags
 
