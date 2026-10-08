@@ -17,7 +17,7 @@ def find_longest_match(search_buffer, lookahead_buffer):
 
             if search_buffer[source_index] != lookahead_buffer[length]:
                 break
-
+            
             length += 1
 
         # Keep the longest match

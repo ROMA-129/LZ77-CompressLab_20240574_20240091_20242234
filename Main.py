@@ -209,7 +209,7 @@ def main():
     root = tk.Tk()
     root.title("LZ77 Compression Engine")
     root.geometry("450x380")
-    root.resizable(True, True)
+    root.resizable(False, False)
 
     bg_color = "#1e1e2e"
     root.configure(bg=bg_color)
