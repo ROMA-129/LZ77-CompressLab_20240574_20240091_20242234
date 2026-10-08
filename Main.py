@@ -5,7 +5,7 @@ from tkinter import filedialog, messagebox
 from Compression import compress
 from Decompression import decompress
 
-# --- 🎯 حل مشكلة بكسلة الخطوط (High DPI Awareness) ---
+# ---  Fix font blurriness issue (High DPI Awareness) ---
 try:
     ctypes.windll.shcore.SetProcessDpiAwareness(1)
 except Exception:
@@ -14,7 +14,7 @@ except Exception:
 
 
 def encode_symbol(symbol):
-    """تحويل الحروف الخاصة إلى صيغة آمنة للحفظ في الملف"""
+    """Convert special characters into a safe format for saving to file."""
     if symbol is None:
         return "NULL"
     elif symbol == "\n":
@@ -29,7 +29,7 @@ def encode_symbol(symbol):
 
 
 def decode_symbol(symbol_str):
-    """استرجاع الحروف الخاصة عند قراءة الملف"""
+    """Restore special characters when reading the tags file."""
     if symbol_str == "NULL":
         return None
     elif symbol_str == "\\n":
@@ -44,15 +44,15 @@ def decode_symbol(symbol_str):
 
 
 def write_tags_file(file_path, tags):
-    """حفظ الـ Tags في ملف txt بصيغة (Offset,Length,Symbol)"""
+    """Save generated LZ77 tags to a text file in (Offset, Length, Symbol) format."""
     with open(file_path, "w", encoding="utf-8") as file:
         for pos, length, next_sym in tags:
             sym_str = encode_symbol(next_sym)
-            file.write(f"({pos},{length},{sym_str})\n")  # 👈 أضفنا الأقواس هنا
+            file.write(f"({pos},{length},{sym_str})\n")  # Write formatted tuple tag
 
 
 def read_tags_file(file_path):
-    """قراءة الـ Tags المكتوبة بالأقواس من ملف txt"""
+    """Read and parse tuple-formatted LZ77 tags from a text file."""
     tags = []
     with open(file_path, "r", encoding="utf-8") as file:
         for line in file:
@@ -60,7 +60,7 @@ def read_tags_file(file_path):
             if not line:
                 continue
             
-            # إزالة القوسين الأول والأخير لو موجودين
+            # Remove leading and trailing parentheses if present
             if line.startswith("(") and line.endswith(")"):
                 line = line[1:-1]
                 
@@ -72,8 +72,9 @@ def read_tags_file(file_path):
                 tags.append((pos, length, next_sym))
     return tags
 
+
 def process_compression():
-    """عملية اختيار الملف وضغطه"""
+    """Handle text file selection and trigger the compression process."""
     input_file = filedialog.askopenfilename(
         title="Select Input Text File",
         filetypes=[("Text Files", "*.txt")]
@@ -108,7 +109,7 @@ def process_compression():
 
 
 def process_decompression():
-    """عملية اختيار ملف الـ Tags وفك ضغطه"""
+    """Handle tags file selection and trigger the decompression process."""
     input_file = filedialog.askopenfilename(
         title="Select Tags File",
         filetypes=[("Text Files", "*.txt")]
@@ -143,7 +144,7 @@ def process_decompression():
 
 
 def show_about_dialog(parent):
-    """دالة لفتح نافذة فرعية بالأسماء عند الضغط على زر About"""
+    """Display a child modal window showing team members and IDs upon clicking 'About'."""
     about_win = tk.Toplevel(parent)
     about_win.title("About & Team")
     about_win.geometry("400x260")
@@ -172,7 +173,7 @@ def show_about_dialog(parent):
 
     for name, student_id in members:
         row_frame = tk.Frame(about_win, bg=bg_color)
-        row_frame.pack(fill="x", padx=25, pady=4)  # 👈 تم التعديل إلى padx
+        row_frame.pack(fill="x", padx=25, pady=4)  # Horizontal padding configured
 
         name_label = tk.Label(
             row_frame,
@@ -218,9 +219,9 @@ def main():
     bg_color = "#1e1e2e"
     root.configure(bg=bg_color)
 
-    # 1. إطار علوي يحتوي على زر (About / Team)
+    # 1. Top bar frame containing the (About / Team) button
     top_bar = tk.Frame(root, bg=bg_color)
-    top_bar.pack(fill="x", padx=15, pady=(10, 0))  # 👈 تم التعديل إلى padx
+    top_bar.pack(fill="x", padx=15, pady=(10, 0))  # Horizontal padding configured
 
     about_btn = tk.Button(
         top_bar,
@@ -236,7 +237,7 @@ def main():
     )
     about_btn.pack(side="right")
 
-    # 2. العنوان الرئيسي
+    # 2. Main application title label
     title_label = tk.Label(
         root,
         text="LZ77 Compression Engine",
@@ -246,7 +247,7 @@ def main():
     )
     title_label.pack(pady=(20, 20))
 
-    # 3. زر الضغط
+    # 3. Compression trigger button
     compress_btn = tk.Button(
         root,
         text="Compress TXT File",
@@ -263,7 +264,7 @@ def main():
     )
     compress_btn.pack(pady=10)
 
-    # 4. زر فك الضغط
+    # 4. Decompression trigger button
     decompress_btn = tk.Button(
         root,
         text="Decompress Tags File",
