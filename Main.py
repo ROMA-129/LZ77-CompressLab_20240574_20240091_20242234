@@ -44,21 +44,26 @@ def decode_symbol(symbol_str):
 
 
 def write_tags_file(file_path, tags):
-    """حفظ الـ Tags في ملف txt"""
+    """حفظ الـ Tags في ملف txt بصيغة (Offset,Length,Symbol)"""
     with open(file_path, "w", encoding="utf-8") as file:
         for pos, length, next_sym in tags:
             sym_str = encode_symbol(next_sym)
-            file.write(f"{pos},{length},{sym_str}\n")
+            file.write(f"({pos},{length},{sym_str})\n")  # 👈 أضفنا الأقواس هنا
 
 
 def read_tags_file(file_path):
-    """قراءة الـ Tags من ملف txt"""
+    """قراءة الـ Tags المكتوبة بالأقواس من ملف txt"""
     tags = []
     with open(file_path, "r", encoding="utf-8") as file:
         for line in file:
-            line = line.rstrip("\r\n")
+            line = line.strip()
             if not line:
                 continue
+            
+            # إزالة القوسين الأول والأخير لو موجودين
+            if line.startswith("(") and line.endswith(")"):
+                line = line[1:-1]
+                
             parts = line.split(",", 2)
             if len(parts) == 3:
                 pos = int(parts[0])
@@ -66,7 +71,6 @@ def read_tags_file(file_path):
                 next_sym = decode_symbol(parts[2])
                 tags.append((pos, length, next_sym))
     return tags
-
 
 def process_compression():
     """عملية اختيار الملف وضغطه"""
