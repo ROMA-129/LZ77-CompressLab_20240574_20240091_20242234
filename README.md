@@ -5,6 +5,11 @@ A crisp, lightweight Python implementation of the **LZ77 Lossless Data Compressi
 Developed as a group project for the **Information Theory & Data Compression** course.
 
 ---
+## 🔗 Source Code & Repository
+
+* **GitHub Repository:** [ROMA-129/LZ77-CompressLab](https://github.com/ROMA-129/LZ77-CompressLab_20240574_20240091_20242234.git)
+
+---
 
 ## ✨ Features
 
